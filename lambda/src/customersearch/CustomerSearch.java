@@ -1,6 +1,8 @@
 package customersearch;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 public class CustomerSearch {
@@ -45,6 +47,24 @@ public class CustomerSearch {
 					long sizecount = customers.stream().filter(c -> c.getSize() == s).count();
 					println(s.toString() + "： " + sizecount);
 				}
+				break;
+			case "sum":
+				HashMap<Size, Integer> point = new HashMap<>();
+				point.put(Size.SMALL, 1);
+				point.put(Size.MIDDLE, 3);
+				point.put(Size.LARGE, 5);
+				point.put(Size.XLARGE, 10);
+				int allpoints = customers.stream().mapToInt(c -> point.get(c.getSize())).sum();
+				println("発生したポイントの総計：" + allpoints + "点");
+				break;
+			case "average":
+				OptionalDouble averageAge = customers.stream().filter(c -> c.getGender() == Gender.MAN)
+						.mapToDouble(c -> c.getAge()).average();
+				String outString = String.format("男性の平均年齢： %.1f歳", averageAge.getAsDouble());
+				println(outString);
+				break;
+			case "age": //オリジナル
+				customers.stream().forEach(CustomerPrinter::printNameAndAge);
 				break;
 			}
 		} else {
